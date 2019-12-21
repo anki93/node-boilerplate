@@ -3,8 +3,6 @@ dotenv.config();
 
 import http from 'http';
 import app from "../app";
-//var debug = require('debug')('boilerplate:server');
-//console.log(require('os').cpus().length)
 
 /**
  * Get port from environment and store in Express.
