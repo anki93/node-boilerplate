@@ -9,8 +9,13 @@
     "noImplicitAny": true,
     "strict": true,
     "noUnusedLocals": true,
-    "noImplicitThis":true,
-    "sourceMap":true
+    "noImplicitThis": true,
+    "sourceMap": true,
+    "typeRoots": [
+      "./types"
+    ]
   },
-  "lib": ["es2015"]
+  "lib": [
+    "es2015"
+  ]
 }
