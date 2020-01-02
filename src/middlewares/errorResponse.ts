@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { Boom } from '@hapi/boom'
+import { logger } from '../config'
+
 /**
  * Catch 404 and forward to error handler
  * @public
@@ -17,11 +19,18 @@ export default (err: Boom | Error, req: Request, res: Response, next: NextFuncti
 }
 
 // handle unhandled Rejection
-process.on('unhandledRejection', (err, p) => {
-  console.log(err)
+process.on('unhandledRejection', (event, p) => {
+  // logger.log({
+  //   level: 'error',
+  //   message: event.reason
+  // });
 })
 
 // handle uncaught exception
-process.on('uncaughtException', (err) => {
-  console.log(err)
+process.on('uncaughtException', (err: Error) => {
+  logger.log({
+    level: 'error',
+    message: err.message,
+    stack: err.stack
+  });
 })
