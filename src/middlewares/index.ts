@@ -1,4 +1,4 @@
-import { Application, Response, Request, NextFunction } from "express"
+import { Application } from "express"
 import cors from 'cors';
 import logger from 'morgan';
 import compression from 'compression';
@@ -6,9 +6,7 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import notFound from "./notFound";
 import errorResponse from "./errorResponse";
-
-// import notFound from "./notFound"
-// import errorHandler from "./errorHandler"
+import * as routes from '../routes'
 
 export default (app: Application) => {
 
@@ -30,9 +28,8 @@ export default (app: Application) => {
   // parse application/json
   app.use(bodyParser.json())
 
-  app.get('/', (req: Request, res: Response, next: NextFunction) => {
-    res.send("ok2")
-  });
+  // routes
+  app.use("/users", routes.users)
 
   // Not Found
   app.use(notFound);

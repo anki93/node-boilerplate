@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { Boom } from '@hapi/boom'
-import { logger } from '../config'
+import { LOGGER, CONSTANT } from '../config'
 
 /**
  * Catch 404 and forward to error handler
@@ -13,14 +13,14 @@ export default (err: Boom | Error, req: Request, res: Response, next: NextFuncti
     res.status(500).json({
       statusCode: 500,
       error: err.message,
-      message: "Sorry, something went wrong there. Try again."
+      message: CONSTANT.ERROR.MESSAGE
     })
   }
 }
 
 // handle unhandled Rejection
 process.on('unhandledRejection', (event, p) => {
-  // logger.log({
+  // LOGGER.log({
   //   level: 'error',
   //   message: event.reason
   // });
@@ -28,7 +28,7 @@ process.on('unhandledRejection', (event, p) => {
 
 // handle uncaught exception
 process.on('uncaughtException', (err: Error) => {
-  logger.log({
+  LOGGER.log({
     level: 'error',
     message: err.message,
     stack: err.stack
