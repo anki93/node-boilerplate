@@ -12,7 +12,7 @@ export default (err: Boom | Error, req: Request, res: Response, next: NextFuncti
   } else {
     res.status(500).json({
       statusCode: 500,
-      error: err.message,
+      error: err instanceof Error ? err.message : err,
       message: CONSTANT.ERROR.MESSAGE
     })
   }

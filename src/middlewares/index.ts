@@ -6,7 +6,7 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import notFound from "./notFound";
 import errorResponse from "./errorResponse";
-import * as routes from '../routes'
+import routes from '../routes'
 
 export default (app: Application) => {
 
@@ -29,7 +29,7 @@ export default (app: Application) => {
   app.use(bodyParser.json())
 
   // routes
-  app.use("/users", routes.users)
+  routes(app)
 
   // Not Found
   app.use(notFound);
