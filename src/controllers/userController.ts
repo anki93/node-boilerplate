@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express"
+// import { badData } from "@hapi/boom";
 
 class UserController {
   index(req: Request, res: Response, next: NextFunction) {
-    // res.json({ a: 1 });
-    //next(new Error("oks"))
+    // next("334")
     throw new Error('BROKEN')
   }
 }

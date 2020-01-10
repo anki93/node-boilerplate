@@ -1,19 +1,36 @@
 import { Request, Response, NextFunction } from 'express'
 import { Boom } from '@hapi/boom'
 import { LOGGER, CONSTANT } from '../config'
+import { CustomError } from '../utils';
 
-/**
- * Catch 404 and forward to error handler
- * @public
- */
 export default (err: Boom | Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof Boom) {
-    res.status(err.output.statusCode).json(err.output.payload);
+    res.status(err.output.statusCode).json({
+      ...err.output.payload, 
+      data: err.data
+    });
+  } else if(err instanceof CustomError) {
+    res.status(500).json({
+      statusCode: 500,
+      error: err.message,
+      message: err.message,
+      data: null,
+    })
   } else {
+    
+    let extra: any = { }
+    
+    // passing extra params for debugging.
+    if(process.env.DEBUG === 'true') {
+      extra.stack = err.stack;
+    }
+
     res.status(500).json({
       statusCode: 500,
       error: err instanceof Error ? err.message : err,
-      message: CONSTANT.ERROR.MESSAGE
+      message: CONSTANT.ERROR.MESSAGE,
+      data: null,
+      ...extra
     })
   }
 }

@@ -1,3 +1,3 @@
 export * from "./logger";
 export * from "./constant";
-export * from "./mongoose"
+export * from "./mongoose";
