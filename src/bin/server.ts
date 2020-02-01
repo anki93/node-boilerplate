@@ -59,8 +59,8 @@ function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? `pipe ${addr}`
-    : addr === null 
-      ? '' 
+    : addr === null
+      ? ''
       : `port ${addr.port}`;
   console.info(`server started on ${bind}`)
 }

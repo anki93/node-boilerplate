@@ -6,10 +6,10 @@ import { CustomError } from '../utils';
 export default (err: Boom | Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof Boom) {
     res.status(err.output.statusCode).json({
-      ...err.output.payload, 
+      ...err.output.payload,
       data: err.data
     });
-  } else if(err instanceof CustomError) {
+  } else if (err instanceof CustomError) {
     res.status(500).json({
       statusCode: 500,
       error: err.message,
@@ -17,11 +17,11 @@ export default (err: Boom | Error, req: Request, res: Response, next: NextFuncti
       data: null,
     })
   } else {
-    
-    let extra: any = { }
-    
+
+    let extra: any = {}
+
     // passing extra params for debugging.
-    if(process.env.DEBUG === 'true') {
+    if (process.env.DEBUG === 'true') {
       extra.stack = err.stack;
     }
 

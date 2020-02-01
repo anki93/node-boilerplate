@@ -1,10 +1,12 @@
 import { Request, Response, NextFunction } from "express"
 // import { badData } from "@hapi/boom";
+import { userService } from "../services"
 
 class UserController {
   index(req: Request, res: Response, next: NextFunction) {
-    // next("334")
-    throw new Error('BROKEN')
+    userService.user().then(function (err) {
+      next(err)
+    }).catch(next);
   }
 }
 
