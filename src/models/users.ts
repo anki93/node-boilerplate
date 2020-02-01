@@ -42,7 +42,7 @@ let schema = {
   }
 }
 
-var UserSchema = new mongoose.Schema(schema, {
+let UserSchema = new mongoose.Schema(schema, {
   timestamps: true
 })
 

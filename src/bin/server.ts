@@ -64,4 +64,3 @@ function onListening() {
       : `port ${addr.port}`;
   console.info(`server started on ${bind}`)
 }
-
