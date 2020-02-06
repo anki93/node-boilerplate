@@ -7,6 +7,7 @@ import helmet from "helmet";
 import notFound from "./notFound";
 import errorResponse from "./errorResponse";
 import routes from '../routes'
+import converter from "./converter";
 
 export default (app: Application) => {
 
@@ -33,6 +34,9 @@ export default (app: Application) => {
 
   // Not Found
   app.use(notFound);
+
+  // error converter
+  app.use(converter);
 
   // Error Handler
   app.use(errorResponse);
