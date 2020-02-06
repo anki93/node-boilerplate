@@ -28,7 +28,7 @@
     "@types/morgan": "^1.7.37",
     "@types/randomstring": "^1.1.6",
     "@types/uuid": "^3.4.6",
-    "@types/winston": "^2.4.4",
+    "@types/winston": "^2.4.4"
   },
   "dependencies": {
     "ajv": "^6.11.0",

@@ -2,7 +2,7 @@ import ajv from "ajv";
 import ajvError from "ajv-errors";
 
 let Ajv = new ajv({ allErrors: true, jsonPointers: true, $data: true })
-ajvError(Ajv)
+ajvError(Ajv, { keepError: false })
 
 class UserRequest {
   login(data: { username: string, password: string }) {
@@ -11,6 +11,8 @@ class UserRequest {
       required: [
         'username', 'password'
       ],
+      emUsed: false,
+
       properties: {
         username: {
           type: 'string',
