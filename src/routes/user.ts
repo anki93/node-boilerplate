@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { UserConroller } from '../controllers'
-
+import { userController } from '../controllers'
+import { validateLoginRequest } from "../requests"
 const router = Router()
 
-router.get('/', UserConroller.index)
-router.post('/signin', UserConroller.signIn)
-router.get('/signup', UserConroller.signUp)
+router.get('/', userController.index)
+router.post('/login', validateLoginRequest, userController.login.bind(userController))
+router.get('/register', userController.register)
 
 export default router;

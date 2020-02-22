@@ -3,12 +3,11 @@ class UserService {
     return 122;
   }
 
-  async signIn(): Promise<string> {
-    throw new Error("sdsd")
-    return "data"
+  async login(): Promise<string> {
+    return "ok"
   }
 
-  async signUp() {
+  async register() {
     return "adas"
   }
 }

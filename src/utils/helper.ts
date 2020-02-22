@@ -1,10 +1,19 @@
 import uuid from 'uuid/v1'
-
+import ajv from "ajv";
+import ajvError from "ajv-errors";
 import _ from 'lodash'
 import { generate, GenerateOptions } from 'randomstring'
 import { hashSync, genSaltSync, compareSync } from 'bcrypt-nodejs'
 
+let Ajv = new ajv({ allErrors: true, jsonPointers: true, $data: true })
+ajvError(Ajv, { keepError: false })
+
+
 class Helper {
+
+  // validation
+  ajv = Ajv;
+
   // convert password to saltsync
   bcrypt(password: string) {
     return hashSync(password, genSaltSync(10))
