@@ -4,6 +4,6 @@ declare namespace Express {
   }
 
   export interface Response {
-    flush: Function
+    // flush: Function
   }
 }
