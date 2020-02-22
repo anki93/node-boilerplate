@@ -1,11 +1,6 @@
 import mongoose from 'mongoose'
-import { helper } from '../utils'
-
-enum STATUS {
-  ACTIVE = 'ACTIVE',
-  DELETED = 'DELETED',
-  INACTIVE = 'INACTIVE',
-}
+import { helper } from '../../utils'
+import { STATUS, IUser } from './IUser'
 
 let schema = {
   firstname: {
@@ -55,4 +50,4 @@ UserSchema.set('toJSON', {
   virtuals: false
 })
 
-export default mongoose.model('User', UserSchema)
+export const User =  mongoose.model<IUser>('User', UserSchema)

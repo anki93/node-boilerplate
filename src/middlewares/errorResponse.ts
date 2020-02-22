@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { Boom } from '@hapi/boom'
 import { LOGGER, CONSTANT } from '../config'
-import { CustomError } from '../utils';
 
 export default (err: Boom | Error, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof Boom) {
@@ -9,13 +8,6 @@ export default (err: Boom | Error, req: Request, res: Response, next: NextFuncti
       ...err.output.payload,
       data: err.data
     });
-  } else if (err instanceof CustomError) {
-    res.status(500).json({
-      statusCode: 500,
-      error: err.message,
-      message: err.message,
-      data: null,
-    })
   } else {
 
     let extra: any = {}
