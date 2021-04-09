@@ -1,20 +1,23 @@
-import { connection, set, connect } from 'mongoose'
+import { connection, set, connect, STATES } from 'mongoose'
+import { ConnectionLayer } from '../core/interface/connectionLayer'
 
-let {
-  MONGO_DEBUG,
-  MONGOURL
-}: any = process.env
+let { MONGO_DEBUG, MONGOURL }: any = process.env
 
-// Exit application on error
-connection.on('error', (err) => {
-  console.error(`MongoDB connection error: ${err}`)
-  process.exit(-1)
-})
+connection.on("open", () => {
+  console.log("Connected to Mongo.");
+});
+
+connection.on('error', (err: any) => {
+  console.error(JSON.stringify(err));
+});
+
+connection.on('close', () => {
+  console.log('MongoDb connection closed.');
+});
+
 
 // print mongoose logs in dev env
-if (MONGO_DEBUG === 'TRUE') {
-  set('debug', true)
-}
+set('debug', MONGO_DEBUG === 'true')
 
 /**
  * Connect to mongo db
@@ -22,12 +25,20 @@ if (MONGO_DEBUG === 'TRUE') {
  * @returns {object} Mongoose connection
  * @public
  */
-export const mongoose = {
-  connect: () => {
-    connect(MONGOURL, {
+export class MongoDb extends ConnectionLayer {
+  async connect() {
+    await connect(MONGOURL, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
-    return connection
   }
+
+  async disconnect() {
+    await connection.close();
+  }
+
+  async healthCheck() {
+    return STATES[connection.readyState]
+  }
+
 }

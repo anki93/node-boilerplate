@@ -1,13 +1,15 @@
-import 'source-map-support/register'
-import express from 'express';
-import middlerwares from './middlewares';
-import { mongoose } from "./config"
+import "source-map-support/register";
+import express from "express";
+import { MongoDb } from "./config"
+import AppMiddleware from "./core/middlewares/app.middlewares"
+import UserRoute from "./user/user.route"
 
-mongoose.connect()
+new MongoDb();
 
 const app = express();
 
-// middlewares
-middlerwares(app);
+const appMiddleware = new AppMiddleware(app);
+appMiddleware.addRoute("/user", new UserRoute());
+appMiddleware.run();
 
 export default app;

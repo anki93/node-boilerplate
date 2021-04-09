@@ -1,27 +1,27 @@
-import { helper } from "../utils"
+import { utils } from "../core/utils";
 import { Request, Response, NextFunction } from "express";
 import { badRequest } from "@hapi/boom";
-import { CONSTANT } from "../config";
+import { Constant } from "./user.constant";
 
-export const validateLoginRequest = (req: Request, res: Response, next: NextFunction) => {
+export const validate = (req: Request, res: Response, next: NextFunction) => {
   let userSchema = {
-    type: 'object',
+    type: "object",
     required: [
-      'username', 'password'
+      "userOrEmail", "password"
     ],
     emUsed: false,
     properties: {
       username: {
-        type: 'string',
+        type: "string",
         errorMessage: {
-          type: "Username is required.",
+          type: "Username/Email is required.",
         }
       },
       password: {
-        type: 'string',
+        type: "string",
         minLength: 3,
         errorMessage: {
-          type: "Password field is requied.",
+          type: "Password is requied.",
           minLength: "Should not be shorter than 3 characters",
         }
       }
@@ -29,17 +29,17 @@ export const validateLoginRequest = (req: Request, res: Response, next: NextFunc
     errorMessage: {
       type: "Must be an object",
       required: {
-        username: "Username field is required.",
-        password: "Password field is required."
+        username: "Username/Email is required.",
+        password: "Password is required."
       }
     }
   }
-  let validate = helper.ajv.compile(userSchema);
+  const validate = utils.ajv.compile(userSchema);
   if (validate(req.body)) {
     next()
   } else {
     next(
-      badRequest(CONSTANT.ERROR.VALIDATION, validate.errors)
+      badRequest(Constant.error.message, validate.errors)
     );
   }
 }
