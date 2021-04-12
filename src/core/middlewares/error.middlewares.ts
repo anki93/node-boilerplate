@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { notFound } from '@hapi/boom'
+import { notFound, Payload } from '@hapi/boom'
 import { Boom } from '@hapi/boom'
 import { Logger, CONSTANT } from '../../config'
 
@@ -33,11 +33,11 @@ export class ErrorMiddleware {
    * */
   static errorResponseHandler(err: Boom | Error, req: Request, res: Response, next: Function) {
     if (err instanceof Boom) {
-      const obj = err.output.payload;
+      const obj: Payload = err.output.payload;
       obj.data = err.data;
       res.status(err.output.statusCode).json(obj);
     } else {
-      const obj = {
+      const obj: Payload = {
         statusCode: 500, data: null,
         error: err instanceof Error ? err.message : err,
         message: CONSTANT.ERROR.MESSAGE,

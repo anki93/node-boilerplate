@@ -24,7 +24,7 @@ export default class AppMiddleware {
 
   public run() {
     this.globalMiddlewares();
-    this.routes.forEach((module: IRoute) => this.app.use(module.name, module.route.getRoutes()));
+    this.routes.forEach((module: IRoute) => this.app.use(`${module.name}`, module.route.getRoutes()));
     this.errorHandlingMiddlerwares();
   }
 

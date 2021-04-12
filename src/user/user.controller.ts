@@ -4,7 +4,13 @@ import { Request, Response } from 'express';
 
 class UserController {
   async list(req: Request, res: Response) {
-    res.status(200).send("OK");
+    res.status(200).json("ok");
+  }
+
+  async create(req: Request, res: Response) {
+    res.status(200).json({
+      status: "ok"
+    });
   }
 }
 

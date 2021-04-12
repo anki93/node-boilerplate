@@ -1,3 +1,5 @@
+import { Payload } from "@hapi/boom";
+
 declare namespace Express {
   export interface Request {
 
@@ -5,5 +7,6 @@ declare namespace Express {
 
   export interface Response {
     // flush: Function
+    json: Function<Payload>
   }
 }
