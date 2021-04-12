@@ -11,10 +11,10 @@ const Ajv = new ajv({ allErrors: true, $data: true })
 ajvError(Ajv, {  })
 
 
-class Utils {
+export default class Utils {
 
   // validation
-  async validate(schema: Schema, data: IApp.IObject<any>): Promise<IApp.IValidate> {
+  static async validate(schema: Schema, data: IApp.IObject<any>): Promise<IApp.IValidate> {
     const validate = Ajv.compile(schema)
     return {
       isValid: validate(data),
@@ -23,28 +23,48 @@ class Utils {
   };
 
   // convert password to saltsync
-  bcrypt(password: string): string {
+  static bcrypt(password: string): string {
     return hashSync(password, genSaltSync(10))
   }
 
   // compare password with hash
-  compareSync(password: string, hash: string): boolean {
+  static compareSync(password: string, hash: string): boolean {
     return compareSync(password, hash)
   }
 
   // Capitalize a string
-  capitalize(string: string): string {
+  static capitalize(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1)
   }
 
   // generate uuid string
-  uuid(): string {
+  static uuid(): string {
     return uuid.v1();
   }
 
-  randomString(options: GenerateOptions): string {
+  static randomString(options: GenerateOptions): string {
     return generate(options)
   }
-}
 
-export const utils = new Utils()
+  // Clear empty attributes
+  static clearEmptyAttributes(obj: IApp.IObject<any>) {
+    for (var k in obj) {
+      if(typeof obj[k] === "string" && obj[k].length === 0) {
+        delete obj[k];
+      } else if(!obj[k] || typeof obj[k] === "object") {
+        Utils.clearEmptyAttributes(obj[k])
+      }
+    }
+  }
+
+  // trim empty attributes
+  static trimAttributes(obj: IApp.IObject<any>) {
+    for (var k in obj) {
+      if(typeof obj[k] === "string") {
+        obj[k] = obj[k].trim();
+      } else if(!obj[k] || typeof obj[k] === "object") {
+        Utils.clearEmptyAttributes(obj[k])
+      }
+    }
+  }
+}

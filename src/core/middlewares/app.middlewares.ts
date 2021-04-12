@@ -5,6 +5,7 @@ import logger from "morgan";
 import compression from "compression";
 import { ErrorMiddleware } from "./error.middlewares";
 import { RouteLayer } from "../interface/routerLayer";
+import { RequestBodyMiddlewares } from "./request.body.middlewares";
 
 interface IRoute {
   name: string;
@@ -46,6 +47,11 @@ export default class AppMiddleware {
 
     // parse application/json
     this.app.use(json())
+
+    // trim empty attribute
+    this.app.use(RequestBodyMiddlewares.trimAttributeMiddleware)
+    // remove empty attribute
+    this.app.use(RequestBodyMiddlewares.clearEmptyAttributesMiddleware)
   }
 
   protected errorHandlingMiddlerwares() {

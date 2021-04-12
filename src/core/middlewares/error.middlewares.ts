@@ -23,6 +23,7 @@ export class ErrorMiddleware {
 
   /**
    * optimize error and logs error
+   * handle error logs 
    * */
   static optimizeErrorResponse(err: Error, req: Request, res: Response, next: NextFunction) {
     next(err)

@@ -1,4 +1,4 @@
-import { utils } from "../core/utils";
+import Utils from "../core/utils";
 import { Request, Response, NextFunction } from "express";
 import { badRequest } from "@hapi/boom";
 import { Constant } from "../core/core.constant";
@@ -36,6 +36,6 @@ export const createRequest = async (req: Request, res: Response, next: NextFunct
     }
   }
 
-  const validate = await utils.validate(userSchema, req.body);
+  const validate = await Utils.validate(userSchema, req.body);
   next(validate.isValid ? null : badRequest(Constant.error.validation, validate.errors))
 }

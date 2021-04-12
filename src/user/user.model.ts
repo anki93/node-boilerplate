@@ -1,5 +1,5 @@
 import mongoose, { Document } from "mongoose"
-import { utils } from "../core/utils"
+import Utils from "../core/utils"
 
 export enum STATUS {
   ACTIVE = 'ACTIVE',
@@ -23,11 +23,11 @@ export interface IUser extends Document {
 let schema = {
   firstname: {
     type: String,
-    set: utils.capitalize
+    set: Utils.capitalize
   },
   lastname: {
     type: String,
-    set: utils.capitalize
+    set: Utils.capitalize
   },
   username: {
     type: String,
@@ -39,7 +39,7 @@ let schema = {
   },
   password: {
     type: String,
-    set: utils.bcrypt
+    set: Utils.bcrypt
   },
   profile: {
     type: String
@@ -60,7 +60,7 @@ let UserSchema = new mongoose.Schema(schema, {
 })
 
 // UserSchema.methods.compareSync = function (password: string) {
-//   return utils.compareSync(password, this.password)
+//   return Utils.compareSync(password, this.password)
 // }
 
 UserSchema.set('toJSON', {
