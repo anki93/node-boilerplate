@@ -54,9 +54,9 @@ export default class AppMiddleware {
     this.app.use(json());
 
     // trim empty attribute
-    this.app.use(RequestBodyMiddlewares.trimAttributeMiddleware);
+    this.app.use(RequestBodyMiddlewares.trimMiddleware);
     // remove empty attribute
-    this.app.use(RequestBodyMiddlewares.clearEmptyAttributesMiddleware);
+    this.app.use(RequestBodyMiddlewares.cleanMiddleware);
   }
 
   protected errorHandlingMiddlerwares() {
