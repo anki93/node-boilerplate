@@ -6,7 +6,7 @@ export class RequestBodyMiddlewares {
    * Trim attribute
   */
   static trimAttributeMiddleware(req: Request, res: Response, next: NextFunction) {
-    Utils.trimAttributes(req.body)
+    Utils.trimAttributes(req.body);
     next();
   }
 
@@ -14,7 +14,7 @@ export class RequestBodyMiddlewares {
   * Clear Empty attributes middlerware
   */
   static clearEmptyAttributesMiddleware(req: Request, res: Response, next: NextFunction) {
-    Utils.clearEmptyAttributes(req.body)
+    Utils.clearEmptyAttributes(req.body);
     next();
   }
 }

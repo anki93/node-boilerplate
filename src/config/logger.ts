@@ -1,9 +1,9 @@
-import { existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
-import winston from 'winston';
-import 'winston-daily-rotate-file';
+import { existsSync, mkdirSync } from "fs";
+import { join } from "path";
+import winston from "winston";
+import "winston-daily-rotate-file";
 
-let logDirectory = join(__dirname, "../../logs")
+let logDirectory = join(__dirname, "../../logs");
 
 existsSync(logDirectory) || mkdirSync(logDirectory);
 
@@ -13,9 +13,9 @@ const log = winston.createLogger({
   transports: [
     new winston.transports.DailyRotateFile({
       filename: logDirectory + "/%DATE%-error.log",
-      maxFiles: '14d'
-    })
-  ]
+      maxFiles: "14d",
+    }),
+  ],
 });
 
 export class Logger {
@@ -28,10 +28,10 @@ export class Logger {
   }
 
   static warn(message: string) {
-    log.warn(message)
+    log.warn(message);
   }
 
   static debug(message: string) {
-    log.debug(message)
+    log.debug(message);
   }
 }

@@ -26,7 +26,7 @@ export class ErrorMiddleware {
    * handle error logs 
    * */
   static optimizeErrorResponse(err: Error, req: Request, res: Response, next: NextFunction) {
-    next(err)
+    next(err);
   }
 
   /** 
@@ -43,8 +43,8 @@ export class ErrorMiddleware {
         error: err instanceof Error ? err.message : err,
         message: CONSTANT.ERROR.MESSAGE,
         stack: process.env.DEBUG === "true" ? err.stack : undefined
-      }
-      res.status(500).json(obj)
+      };
+      res.status(500).json(obj);
     }
   }
 }

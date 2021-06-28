@@ -9,7 +9,7 @@ new MongoDb();
 const app = express();
 
 const appMiddleware = new AppMiddleware(app);
-appMiddleware.addRoute("/user", new UserRoute());
+appMiddleware.addRoute("user", new UserRoute());
 appMiddleware.run();
 
 export default app;

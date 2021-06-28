@@ -52,7 +52,7 @@ export default class Utils {
       if(typeof obj[k] === "string" && obj[k].length === 0) {
         delete obj[k];
       } else if(!obj[k] || typeof obj[k] === "object") {
-        Utils.clearEmptyAttributes(obj[k])
+        Utils.clearEmptyAttributes(obj[k]);
       }
     }
   }

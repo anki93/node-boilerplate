@@ -4,19 +4,21 @@ import { badRequest } from "@hapi/boom";
 import { Constant } from "../core/core.constant";
 import { Schema } from "ajv";
 
-export const createRequest = async (req: Request, res: Response, next: NextFunction) => {
+export const createRequest = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   let userSchema: Schema = {
     type: "object",
-    required: [
-      "userOrEmail", "password"
-    ],
+    required: ["userOrEmail", "password"],
     properties: {
       userOrEmail: {
         type: "string",
         minLength: 3,
         errorMessage: {
           type: "Username/Email is required.",
-        }
+        },
       },
       password: {
         type: "string",
@@ -24,18 +26,22 @@ export const createRequest = async (req: Request, res: Response, next: NextFunct
         errorMessage: {
           type: "Password is requied.",
           minLength: "Should not be shorter than 3 characters",
-        }
-      }
+        },
+      },
     },
     errorMessage: {
       type: "Must be an object",
       required: {
         userOrEmail: "Username/Email is required.",
-        password: "Password is required."
-      }
-    }
-  }
+        password: "Password is required.",
+      },
+    },
+  };
 
   const validate = await Utils.validate(userSchema, req.body);
-  next(validate.isValid ? null : badRequest(Constant.error.validation, validate.errors))
-}
+  next(
+    validate.isValid
+      ? null
+      : badRequest(Constant.error.validation, validate.errors)
+  );
+};

@@ -11,7 +11,7 @@ interface IRoute {
   name: string;
   route: RouteLayer;
 }
-//abstract 
+//abstract
 export default class AppMiddleware {
   protected app: Application;
   protected routes: IRoute[] = [];
@@ -25,7 +25,12 @@ export default class AppMiddleware {
 
   public run() {
     this.globalMiddlewares();
-    this.routes.forEach((module: IRoute) => this.app.use(`${module.name}`, module.route.getRoutes()));
+    this.routes.forEach((module: IRoute) =>
+      this.app.use(
+        `/api/:version(\[v][1-9]?[0-9]\)/${module.name}`,
+        module.route.getRoutes()
+      )
+    );
     this.errorHandlingMiddlerwares();
   }
 
@@ -34,31 +39,31 @@ export default class AppMiddleware {
     this.app.use(helmet());
 
     // cors origin permission
-    this.app.use(cors())
+    this.app.use(cors());
 
     // HTTP request logs
-    this.app.use(logger('dev'))
+    this.app.use(logger("dev"));
 
     // compression
-    this.app.use(compression())
+    this.app.use(compression());
 
     // parse application/x-www-form-urlencoded
-    this.app.use(urlencoded({ extended: true }))
+    this.app.use(urlencoded({ extended: true }));
 
     // parse application/json
-    this.app.use(json())
+    this.app.use(json());
 
     // trim empty attribute
-    this.app.use(RequestBodyMiddlewares.trimAttributeMiddleware)
+    this.app.use(RequestBodyMiddlewares.trimAttributeMiddleware);
     // remove empty attribute
-    this.app.use(RequestBodyMiddlewares.clearEmptyAttributesMiddleware)
+    this.app.use(RequestBodyMiddlewares.clearEmptyAttributesMiddleware);
   }
 
   protected errorHandlingMiddlerwares() {
     // Not Found
     this.app.use(ErrorMiddleware.notFound);
 
-    // handling error logs, 
+    // handling error logs,
     this.app.use(ErrorMiddleware.optimizeErrorResponse);
 
     // Error Handler

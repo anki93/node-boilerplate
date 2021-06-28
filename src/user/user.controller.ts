@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
+import { createRequest } from "./user.request";
 // import userService from './user.service';
-
 
 class UserController {
   async list(req: Request, res: Response) {
@@ -9,7 +9,7 @@ class UserController {
 
   async create(req: Request, res: Response) {
     res.status(200).json({
-      status: "ok"
+      status: "ok",
     });
   }
 }
