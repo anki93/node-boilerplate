@@ -1,7 +1,7 @@
 import uuid from "uuid";
 import ajv, { ErrorObject } from "ajv";
 import ajvError from "ajv-errors";
-import _, { get, has, isArray } from "lodash";
+import _, { get, has, isArray, unset } from "lodash";
 import { generate, GenerateOptions } from "randomstring";
 import { hashSync, genSaltSync, compareSync } from "bcryptjs";
 import { Schema } from "ajv";
@@ -18,6 +18,7 @@ export default class Utils {
             "params.errors[0].params.missingProperty"
           );
         }
+        unset(field, "params");
         return field;
       });
     }

@@ -1,3 +1,4 @@
+import { capitalize, toLower, unset } from "lodash";
 import mongoose, { Document } from "mongoose";
 import Utils from "../core/utils";
 
@@ -9,43 +10,45 @@ export enum STATUS {
 }
 
 export interface IUser extends Document {
-  firstname: string;
-  lastname?: string;
-  username: string;
+  firstName: string;
+  lastName?: string;
+  userName: string;
   email: string;
   password: string;
   profile: string;
-  rating: number;
+  // rating: number;
   status: string;
 }
 
 let schema = {
-  firstname: {
+  firstName: {
     type: String,
-    set: Utils.capitalize,
+    set: capitalize,
   },
-  lastname: {
+  lastName: {
     type: String,
-    set: Utils.capitalize,
+    set: capitalize,
   },
-  username: {
+  userName: {
     type: String,
-    unique: true,
+    index: { unique: true, dropDups: true },
+    set: toLower,
   },
   email: {
     type: String,
-    unique: true,
+    index: { unique: true, dropDups: true },
   },
   password: {
     type: String,
     set: Utils.bcrypt,
+    get: unset,
   },
   profile: {
     type: String,
   },
-  rating: {
-    type: Number,
-    default: 0,
+  isVerify: {
+    type: Boolean,
+    default: false,
   },
   status: {
     type: String,

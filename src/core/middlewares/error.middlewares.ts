@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import { notFound, Payload } from "@hapi/boom";
 import { Boom } from "@hapi/boom";
 import { Logger, CONSTANT } from "../../config";
-import { ValidationError } from "express-validation";
+import { MongoError } from "mongodb";
+import { capitalize, lowerCase } from "lodash";
 
 // handle unhandled Rejection
 process.on("unhandledRejection", (reason: any) => {
@@ -48,6 +49,19 @@ export class ErrorMiddleware {
       const obj: Payload = err.output.payload;
       obj.data = err.data;
       res.status(err.output.statusCode).json(obj);
+    } else if (err instanceof MongoError && err.code == 11000) {
+      const field = err.message
+        .split("index: ")[1]
+        .split("dup key")[0]
+        .split("_")[0];
+      const obj: Payload = {
+        statusCode: 409,
+        data: null,
+        error: err instanceof Error ? err.message : err,
+        message: `${capitalize(lowerCase(field))} already exists.`,
+        stack: process.env.DEBUG === "true" ? err.stack : undefined,
+      };
+      res.status(500).json(obj);
     } else {
       const obj: Payload = {
         statusCode: 500,

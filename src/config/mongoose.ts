@@ -15,7 +15,7 @@ connection.on("close", () => {
   console.log("MongoDb connection closed.");
 });
 
-// print mongoose logs in dev env
+// print mongoose query in console
 set("debug", MONGO_DEBUG === "true");
 
 /**
@@ -29,6 +29,7 @@ export class MongoDb extends ConnectionLayer {
     await connect(MONGOURL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
     });
   }
 

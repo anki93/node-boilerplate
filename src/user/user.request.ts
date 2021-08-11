@@ -11,13 +11,46 @@ export const createRequest = async (
 ) => {
   let userSchema: Schema = {
     type: "object",
-    required: ["userOrEmail", "password"],
+    required: ["firstName", "userName", "email", "password"],
     properties: {
-      userOrEmail: {
+      firstName: {
         type: "string",
         minLength: 3,
+        maxLength: 15,
         errorMessage: {
-          type: "Username/Email is required.",
+          type: "First name is required.",
+          minLength: "First name must be at least 3 characters.",
+        },
+      },
+      lastName: {
+        type: "string",
+        minLength: 3,
+        maxLength: 15,
+        errorMessage: {
+          minLength: "First name must be at least 3 characters.",
+          maxLength: "Last name cannot be longer than 15 characters.",
+        },
+      },
+      userName: {
+        type: "string",
+        minLength: 3,
+        maxLength: 15,
+        pattern: "^[A-Za-z0-9-_]+$",
+        errorMessage: {
+          type: "Username is required.",
+          pattern: "Username may only have _, -, letters  and numbers.",
+          minLength: "Username must be at least 3 characters.",
+          maxLength: "Username cannot be longer than 15 characters.",
+        },
+      },
+      email: {
+        type: "string",
+        minLength: 5,
+        maxLength: 50,
+        errorMessage: {
+          type: "Email is required.",
+          minLength: "Email must be at least 3 characters.",
+          maxLength: "Email cannot be longer than 15 characters.",
         },
       },
       password: {
@@ -32,7 +65,9 @@ export const createRequest = async (
     errorMessage: {
       type: "Must be an object",
       required: {
-        userOrEmail: "Username/Email is required.",
+        firstName: "First name is required",
+        username: "User name is required",
+        email: "Email is required.",
         password: "Password is required.",
       },
     },
