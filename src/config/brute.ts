@@ -13,7 +13,7 @@ const model = mongoose.model(
 const store = new MongooseStore(model);
 
 const failCallback = (
-  req: Express.Request,
+  req: Request,
   res: Response,
   next: NextFunction,
   nextValidRequestDate: Date
