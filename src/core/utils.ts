@@ -69,26 +69,4 @@ export default class Utils {
   static randomString(options: GenerateOptions): string {
     return generate(options);
   }
-
-  // Clear empty attributes
-  static clearEmptyAttributes(obj: IApp.IObject<any>) {
-    for (var k in obj) {
-      if (typeof obj[k] === "string" && obj[k].length === 0) {
-        delete obj[k];
-      } else if (!obj[k] || typeof obj[k] === "object") {
-        Utils.clearEmptyAttributes(obj[k]);
-      }
-    }
-  }
-
-  // trim empty attributes
-  static trimAttributes(obj: IApp.IObject<any>) {
-    for (var k in obj) {
-      if (typeof obj[k] === "string") {
-        obj[k] = obj[k].trim();
-      } else if (!obj[k] || typeof obj[k] === "object") {
-        Utils.clearEmptyAttributes(obj[k]);
-      }
-    }
-  }
 }

@@ -3,6 +3,7 @@ import helmet from "helmet";
 import cors from "cors";
 import logger from "morgan";
 import compression from "compression";
+import hpp from "hpp";
 import { ErrorMiddleware } from "./error.middlewares";
 import { RouteLayer } from "../interface/routerLayer";
 import { RequestBodyMiddlewares } from "./request.body.middlewares";
@@ -52,6 +53,12 @@ export default class AppMiddleware {
 
     // parse application/json
     this.app.use(json());
+
+    // protect against HTTP Parameter Pollution attacks
+    this.app.use(hpp());
+
+    // sanitizeInput
+    this.app.use(RequestBodyMiddlewares.sanitizeInput);
 
     // trim empty attribute
     this.app.use(RequestBodyMiddlewares.trimMiddleware);

@@ -18,7 +18,7 @@ export const createRequest = async (
         minLength: 3,
         maxLength: 15,
         errorMessage: {
-          type: "First name is required.",
+          type: "First name must be a string.",
           minLength: "First name must be at least 3 characters.",
         },
       },
@@ -27,6 +27,7 @@ export const createRequest = async (
         minLength: 3,
         maxLength: 15,
         errorMessage: {
+          type: "Last name must be a string.",
           minLength: "First name must be at least 3 characters.",
           maxLength: "Last name cannot be longer than 15 characters.",
         },
@@ -37,7 +38,7 @@ export const createRequest = async (
         maxLength: 15,
         pattern: "^[A-Za-z0-9-_]+$",
         errorMessage: {
-          type: "Username is required.",
+          type: "Username must be a string.",
           pattern: "Username may only have _, -, letters  and numbers.",
           minLength: "Username must be at least 3 characters.",
           maxLength: "Username cannot be longer than 15 characters.",
@@ -48,7 +49,7 @@ export const createRequest = async (
         minLength: 5,
         maxLength: 50,
         errorMessage: {
-          type: "Email is required.",
+          type: "Email must be a string.",
           minLength: "Email must be at least 3 characters.",
           maxLength: "Email cannot be longer than 15 characters.",
         },
@@ -57,7 +58,7 @@ export const createRequest = async (
         type: "string",
         minLength: 3,
         errorMessage: {
-          type: "Password is requied.",
+          type: "Password must be string.",
           minLength: "Should not be shorter than 3 characters",
         },
       },
@@ -72,7 +73,6 @@ export const createRequest = async (
       },
     },
   };
-
   const validate = await Utils.validate(userSchema, req.body);
   next(
     validate.isValid

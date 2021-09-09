@@ -12,7 +12,7 @@ process.on("unhandledRejection", (reason: any) => {
 
 // handle uncaught exception
 process.on("uncaughtException", (err: Error) => {
-  Logger.error(err.message, err.stack);
+  Logger.error(`UnCaughtException - ${err.message}`, err.stack);
 });
 
 export class ErrorMiddleware {

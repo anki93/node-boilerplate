@@ -1,12 +1,22 @@
 import { Request, Response, NextFunction } from "express";
-import Utils from "../utils";
+import Security from "../security";
 
 export class RequestBodyMiddlewares {
+  /**
+   *  Sanitize untrusted HTML
+   *  */
+  static sanitizeInput(req: Request, res: Response, next: NextFunction) {
+    Security.xss(req.query);
+    Security.xss(req.body);
+    next();
+  }
+
   /**
    * Trim body params
    */
   static trimMiddleware(req: Request, res: Response, next: NextFunction) {
-    Utils.trimAttributes(req.body);
+    Security.trimAttributes(req.body);
+    Security.trimAttributes(req.query);
     next();
   }
 
@@ -14,7 +24,8 @@ export class RequestBodyMiddlewares {
    * clean body params
    */
   static cleanMiddleware(req: Request, res: Response, next: NextFunction) {
-    Utils.clearEmptyAttributes(req.body);
+    Security.clearEmptyAttributes(req.body);
+    Security.clearEmptyAttributes(req.query);
     next();
   }
 }
