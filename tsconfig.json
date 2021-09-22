@@ -5,18 +5,14 @@
     "target": "es6",
     "moduleResolution": "node",
     "outDir": "dist",
-    "rootDir": "src",
+    // "rootDir": "src",
     "noImplicitAny": true,
     "strict": true,
     // "noUnusedLocals": true,
     "noImplicitThis": true,
     "sourceMap": true,
     "skipLibCheck": true,
-    "typeRoots": [
-      "./types"
-    ]
+    "typeRoots": ["./types"]
   },
-  "lib": [
-    "es2015"
-  ]
+  "lib": ["es2015"]
 }

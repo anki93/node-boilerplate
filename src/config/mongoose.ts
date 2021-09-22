@@ -27,9 +27,9 @@ set("debug", MONGO_DEBUG === "true");
 export class MongoDb extends ConnectionLayer {
   async connect() {
     await connect(MONGOURL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
+      // useCreateIndex: true,
     });
   }
 

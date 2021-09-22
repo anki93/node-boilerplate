@@ -1,5 +1,6 @@
 import { capitalize, toLower, unset } from "lodash";
-import mongoose, { Document } from "mongoose";
+import { model, Document, Schema, Model } from "mongoose";
+import { IApp } from "../core/interface/app.common.interface";
 import Utils from "../core/utils";
 
 export enum STATUS {
@@ -14,7 +15,7 @@ export interface IUser extends Document {
   lastName?: string;
   userName: string;
   email: string;
-  password: string;
+  password?: string;
   profile: string;
   // rating: number;
   status: string;
@@ -40,8 +41,8 @@ let schema = {
   },
   password: {
     type: String,
-    set: Utils.bcrypt,
-    get: unset,
+    // set: Utils.bcrypt,
+    // get: unset,
   },
   profile: {
     type: String,
@@ -57,17 +58,39 @@ let schema = {
   },
 };
 
-let UserSchema = new mongoose.Schema(schema, {
+interface IUserDocument extends IUser {
+  isValidPassword: (str: string) => Boolean;
+}
+interface IUserModel extends Model<IUserDocument> {
+  findByEmailOrUserName: (str: string) => Promise<IUserDocument>;
+}
+
+const UserSchema = new Schema<IUserDocument>(schema, {
   timestamps: true,
 });
 
-// UserSchema.methods.compareSync = function (password: string) {
-//   return Utils.compareSync(password, this.password)
-// }
+// pre save document mapping
+UserSchema.pre("save", async function (next) {
+  if (this.isNew) {
+    this.password = Utils.bcrypt(this.password!);
+  }
+  next();
+});
+
+UserSchema.methods.isValidPassword = function (password) {
+  return Utils.compareSync(password, this.password!);
+};
+
+UserSchema.statics.findByEmailOrUserName = function (str: string) {
+  const criteria: IApp.IObject<any> = {
+    $or: [{ userName: str }, { email: str }],
+  };
+  return this.findOne(criteria).exec();
+};
 
 UserSchema.set("toJSON", {
   getters: true,
   virtuals: false,
 });
 
-export const User = mongoose.model<IUser>("User", UserSchema);
+export const User = model<IUserDocument, IUserModel>("User", UserSchema);

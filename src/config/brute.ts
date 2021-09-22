@@ -6,25 +6,28 @@ import mongoose from "mongoose";
 import { Request, Response, NextFunction } from "express";
 import { tooManyRequests } from "@hapi/boom";
 
+// mongo schema
 const model = mongoose.model(
   "bruteforce",
   new mongoose.Schema(BruteForceSchema)
 );
+
+// store
 const store = new MongooseStore(model);
 
+// fail callback
 const failCallback = (
   req: Request,
   res: Response,
   next: NextFunction,
   nextValidRequestDate: Date
 ) => {
-  const msg =
-    "You've made too many failed attempts in a short period of time, please try again " +
-    moment(nextValidRequestDate).fromNow();
+  const msg = "You've made too many failed attempts, please try again later ";
 
-  next(tooManyRequests(msg));
+  next(tooManyRequests(msg + moment(nextValidRequestDate).fromNow()));
 };
 
+// handle error
 const handleStoreError = function (error: any) {
   throw {
     message: error.message,
@@ -32,14 +35,15 @@ const handleStoreError = function (error: any) {
   };
 };
 
-const bruteforce = new ExpressBrute(store, {
-  freeRetries: 5,
-  minWait: 5 * 60 * 1000, // 5 minutes
-  maxWait: 60 * 60 * 1000, // 1 hour,
-  failCallback: failCallback,
-  handleStoreError: handleStoreError,
-});
-
 export default class Brute {
-  static bruteforce = bruteforce;
+  static bruteforce = new ExpressBrute(store, {
+    // freeRetries: 3, // default 3 times
+    minWait: 3 * 60 * 1000, // 3 mins
+    maxWait: 60 * 60 * 1000, // 1 hour,
+    lifetime: 24 * 60 * 60, // session time 24 hours
+    attachResetToRequest: true,
+    refreshTimeoutOnRequest: true,
+    failCallback: failCallback,
+    handleStoreError: handleStoreError,
+  });
 }

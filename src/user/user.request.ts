@@ -4,7 +4,7 @@ import { badRequest } from "@hapi/boom";
 import { Constant } from "../core/core.constant";
 import { Schema } from "ajv";
 
-export const createRequest = async (
+export const signUpRequest = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -16,7 +16,7 @@ export const createRequest = async (
       firstName: {
         type: "string",
         minLength: 3,
-        maxLength: 15,
+        maxLength: 25,
         errorMessage: {
           type: "First name must be a string.",
           minLength: "First name must be at least 3 characters.",
@@ -25,7 +25,7 @@ export const createRequest = async (
       lastName: {
         type: "string",
         minLength: 3,
-        maxLength: 15,
+        maxLength: 25,
         errorMessage: {
           type: "Last name must be a string.",
           minLength: "First name must be at least 3 characters.",
@@ -35,7 +35,7 @@ export const createRequest = async (
       userName: {
         type: "string",
         minLength: 3,
-        maxLength: 15,
+        maxLength: 25,
         pattern: "^[A-Za-z0-9-_]+$",
         errorMessage: {
           type: "Username must be a string.",
@@ -69,6 +69,49 @@ export const createRequest = async (
         firstName: "First name is required",
         username: "User name is required",
         email: "Email is required.",
+        password: "Password is required.",
+      },
+    },
+  };
+  const validate = await Utils.validate(userSchema, req.body);
+  next(
+    validate.isValid
+      ? null
+      : badRequest(Constant.error.validation, validate.errors)
+  );
+};
+
+export const signInRequest = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  let userSchema: Schema = {
+    type: "object",
+    required: ["userNameOrEmail", "password"],
+    properties: {
+      userNameOrEmail: {
+        type: "string",
+        minLength: 3,
+        maxLength: 50,
+        errorMessage: {
+          type: "User name or email must be a string.",
+          minLength: "First name must be at least 3 characters.",
+        },
+      },
+      password: {
+        type: "string",
+        minLength: 3,
+        errorMessage: {
+          type: "Password must be string.",
+          minLength: "Should not be shorter than 3 characters",
+        },
+      },
+    },
+    errorMessage: {
+      type: "Must be an object",
+      required: {
+        userNameOrEmail: "User name or email is required",
         password: "Password is required.",
       },
     },

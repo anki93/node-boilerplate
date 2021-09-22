@@ -1,4 +1,4 @@
-import { Application, Router, urlencoded, json } from "express";
+import { Application, urlencoded, json } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import logger from "morgan";
@@ -6,7 +6,7 @@ import compression from "compression";
 import hpp from "hpp";
 import { ErrorMiddleware } from "./error.middlewares";
 import { RouteLayer } from "../interface/routerLayer";
-import { RequestBodyMiddlewares } from "./request.body.middlewares";
+import { RequestInputMiddlewares } from "./request.input.middlewares";
 
 interface IRoute {
   name: string;
@@ -52,18 +52,13 @@ export default class AppMiddleware {
     this.app.use(urlencoded({ extended: true }));
 
     // parse application/json
-    this.app.use(json());
+    this.app.use(json({ limit: "10mb" }));
 
     // protect against HTTP Parameter Pollution attacks
     this.app.use(hpp());
 
     // sanitizeInput
-    this.app.use(RequestBodyMiddlewares.sanitizeInput);
-
-    // trim empty attribute
-    this.app.use(RequestBodyMiddlewares.trimMiddleware);
-    // remove empty attribute
-    this.app.use(RequestBodyMiddlewares.cleanMiddleware);
+    this.app.use(RequestInputMiddlewares.sanitizeInput);
   }
 
   protected errorHandlingMiddlerwares() {
