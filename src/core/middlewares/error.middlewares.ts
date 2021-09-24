@@ -49,28 +49,46 @@ export class ErrorMiddleware {
       const obj: Payload = err.output.payload;
       obj.data = err.data;
       res.status(err.output.statusCode).json(obj);
-    } else if (err instanceof MongoError && err.code == 11000) {
-      const field = err.message
-        .split("index: ")[1]
-        .split("dup key")[0]
-        .split("_")[0];
-      const obj: Payload = {
-        statusCode: 409,
-        data: null,
-        error: err instanceof Error ? err.message : err,
-        message: `${capitalize(lowerCase(field))} already exists.`,
-        stack: process.env.DEBUG === "true" ? err.stack : undefined,
-      };
-      res.status(500).json(obj);
+    } else if (err instanceof MongoError) {
+      res.status(500).json(ErrorMiddleware.handleMongoError(err));
     } else {
       const obj: Payload = {
         statusCode: 500,
         data: null,
-        error: err instanceof Error ? err.message : err,
+        error:
+          process.env.DEBUG === "true"
+            ? err instanceof Error
+              ? err.message
+              : err
+            : "",
         message: CONSTANT.ERROR.MESSAGE,
         stack: process.env.DEBUG === "true" ? err.stack : undefined,
       };
       res.status(500).json(obj);
     }
+  }
+
+  static handleMongoError(err: MongoError) {
+    const obj: Payload = {
+      statusCode: 409,
+      data: null,
+      error:
+        process.env.DEBUG === "true"
+          ? err instanceof Error
+            ? err.message
+            : err
+          : "",
+      message: "",
+      stack: process.env.DEBUG === "true" ? err.stack : undefined,
+    };
+
+    if (err.code === 11000) {
+      const field = err.message
+        .split("index: ")[1]
+        .split("dup key")[0]
+        .split("_")[0];
+      obj.message = `${capitalize(lowerCase(field))} already exists.`;
+    }
+    return obj;
   }
 }

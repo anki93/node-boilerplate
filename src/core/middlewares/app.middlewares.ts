@@ -52,7 +52,7 @@ export default class AppMiddleware {
     this.app.use(urlencoded({ extended: true }));
 
     // parse application/json
-    this.app.use(json({ limit: "10mb" }));
+    this.app.use(json({ limit: "1mb" }));
 
     // protect against HTTP Parameter Pollution attacks
     this.app.use(hpp());

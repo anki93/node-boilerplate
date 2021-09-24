@@ -15,9 +15,10 @@ export interface IUser extends Document {
   lastName?: string;
   userName: string;
   email: string;
-  password?: string;
+  password: string;
   profile: string;
   // rating: number;
+  role: string[];
   status: string;
 }
 
@@ -51,6 +52,10 @@ let schema = {
     type: Boolean,
     default: false,
   },
+  role: {
+    type: [String],
+    default: ["USER"],
+  },
   status: {
     type: String,
     enum: Object.values(STATUS),
@@ -72,13 +77,13 @@ const UserSchema = new Schema<IUserDocument>(schema, {
 // pre save document mapping
 UserSchema.pre("save", async function (next) {
   if (this.isNew) {
-    this.password = Utils.bcrypt(this.password!);
+    this.password = Utils.bcrypt(this.password);
   }
   next();
 });
 
 UserSchema.methods.isValidPassword = function (password) {
-  return Utils.compareSync(password, this.password!);
+  return Utils.compareSync(password, this.password);
 };
 
 UserSchema.statics.findByEmailOrUserName = function (str: string) {
