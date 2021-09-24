@@ -9,7 +9,6 @@ export class RequestInputMiddlewares {
     Utils.nestedLoop(req.body, Utils.sanitizeAttribute);
     Utils.nestedLoop(req.query, Utils.sanitizeAttribute);
     Utils.nestedLoop(req.params, Utils.sanitizeAttribute);
-    console.log(req.body);
     next();
   }
 }
