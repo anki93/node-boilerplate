@@ -1,14 +1,13 @@
 import { Request, Response, NextFunction } from "express";
-import Utils from "../utils";
-
+import { Universal } from "../utils/index";
 export class RequestInputMiddlewares {
   /**
    *  Sanitize input attributes
    *  */
   static sanitizeInput(req: Request, res: Response, next: NextFunction) {
-    Utils.nestedLoop(req.body, Utils.sanitizeAttribute);
-    Utils.nestedLoop(req.query, Utils.sanitizeAttribute);
-    Utils.nestedLoop(req.params, Utils.sanitizeAttribute);
+    Universal.nestedLoop(req.body, Universal.sanitizeAttribute);
+    Universal.nestedLoop(req.query, Universal.sanitizeAttribute);
+    Universal.nestedLoop(req.params, Universal.sanitizeAttribute);
     next();
   }
 }

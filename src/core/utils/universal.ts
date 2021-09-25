@@ -1,15 +1,13 @@
-import fs from "fs";
 import uuid from "uuid";
 import ajv, { ErrorObject } from "ajv";
 import ajvError from "ajv-errors";
-import { get, has, isArray, isUndefined, keys, unset } from "lodash";
+import { get, has, isArray, isUndefined, unset } from "lodash";
 import { generate, GenerateOptions } from "randomstring";
-import { hashSync, genSaltSync, compareSync } from "bcryptjs";
 import { Schema } from "ajv";
-import jwt from "jsonwebtoken";
 import escapeHTML from "escape-html";
-import { IApp } from "./interface/app.common.interface";
-export default class Utils {
+import { IApp } from "../interface/app.common.interface";
+
+export class Universal {
   static normaliseErrorMessages(errors: Array<ErrorObject> | null | undefined) {
     if (isArray(errors)) {
       return errors.map((field: ErrorObject) => {
@@ -38,7 +36,7 @@ export default class Utils {
       ).compile(schema);
       return {
         isValid: validate(data),
-        errors: Utils.normaliseErrorMessages(validate.errors),
+        errors: Universal.normaliseErrorMessages(validate.errors),
       };
     } catch (err) {
       return {
@@ -46,16 +44,6 @@ export default class Utils {
         errors: [],
       };
     }
-  }
-
-  // convert password to saltsync
-  static bcrypt(str: string): string {
-    return hashSync(str, genSaltSync(10));
-  }
-
-  // compare password with hash
-  static compareSync(str: string, hash: string): boolean {
-    return compareSync(str, hash);
   }
 
   // Capitalize a string
@@ -72,30 +60,6 @@ export default class Utils {
     return generate(options);
   }
 
-  // Create sign
-  // Expire time 1hours
-  static sign(data: IApp.IObject<any>) {
-    try {
-      const privateKey = fs.readFileSync("private.pem");
-      return jwt.sign(data, privateKey, {
-        algorithm: "RS256",
-        expiresIn: "1h",
-      });
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  // toke verify
-  static verify(token: string) {
-    try {
-      const privateKey = fs.readFileSync("public.pem");
-      return jwt.verify(token, privateKey, { algorithms: ["RS256"] });
-    } catch (err) {
-      throw err;
-    }
-  }
-
   /**
    * Nested loop
    */
@@ -109,7 +73,7 @@ export default class Utils {
           obj[k] = val;
         }
       } else if (!obj[k] || typeof obj[k] === "object") {
-        Utils.nestedLoop(obj[k], callback);
+        Universal.nestedLoop(obj[k], callback);
       }
     }
   }

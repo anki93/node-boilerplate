@@ -6,7 +6,12 @@ import { signUpRequest, signInRequest } from "./user.request";
 
 export class UserRoute extends RouteLayer {
   public getRoutes() {
-    this.router.get("/", Authenticate.auth, UserController.list);
+    this.router.get(
+      "/",
+      Authenticate.auth,
+      Authenticate.isRole(["USER"]),
+      UserController.list
+    );
     this.router.post("/signUp", signUpRequest, UserController.signUp);
     this.router.post(
       "/signIn",

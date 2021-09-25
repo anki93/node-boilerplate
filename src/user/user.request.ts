@@ -1,8 +1,8 @@
-import Utils from "../core/utils";
 import { Request, Response, NextFunction } from "express";
 import { badRequest } from "@hapi/boom";
-import { Constant } from "../core/core.constant";
 import { Schema } from "ajv";
+import { Constant } from "../core/core.constant";
+import { Universal } from "../core/utils/index";
 
 export const signUpRequest = async (
   req: Request,
@@ -73,7 +73,7 @@ export const signUpRequest = async (
       },
     },
   };
-  const validate = await Utils.validate(userSchema, req.body);
+  const validate = await Universal.validate(userSchema, req.body);
   next(
     validate.isValid
       ? null
@@ -116,7 +116,7 @@ export const signInRequest = async (
       },
     },
   };
-  const validate = await Utils.validate(userSchema, req.body);
+  const validate = await Universal.validate(userSchema, req.body);
   next(
     validate.isValid
       ? null

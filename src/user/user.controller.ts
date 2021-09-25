@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { IApp } from "../core/interface/app.common.interface";
 import { UserSvc } from "./user.service";
 
 class UserController {
@@ -7,7 +6,8 @@ class UserController {
     try {
       const user = await UserSvc.signUp(body);
       res.status(200).json({
-        status: "ok",
+        statusCode: 200,
+        error: "",
         message: "User sign up successfully!",
         data: user,
       });
@@ -23,7 +23,8 @@ class UserController {
         brute.reset();
       }
       res.status(200).json({
-        status: "ok",
+        statusCode: 200,
+        error: "",
         message: "User sign in successfully!",
         data,
       });
@@ -33,7 +34,7 @@ class UserController {
   }
 
   async list(req: Request, res: Response) {
-    res.status(200).json("ok");
+    // res.status(200).json({});
   }
 }
 

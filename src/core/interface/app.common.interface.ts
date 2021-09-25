@@ -1,4 +1,5 @@
 import { ErrorObject } from "ajv";
+import { JwtPayload } from "jsonwebtoken";
 
 export namespace IApp {
   export interface IObject<T> {

@@ -1,10 +1,10 @@
 import { Payload } from "@hapi/boom";
-
-declare namespace Express {
-  export interface Request {}
-
-  export interface Response {
-    // flush: Function
-    json: Function<Payload>;
+import { Request, Response } from "express";
+interface Json {
+  (data: Payload): Response;
+}
+declare module "express" {
+  interface Response {
+    json: Json;
   }
 }

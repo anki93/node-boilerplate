@@ -1,6 +1,6 @@
 import { unauthorized } from "@hapi/boom";
 import { IApp } from "../core/interface/app.common.interface";
-import Utils from "../core/utils";
+import { Token } from "../core/utils/index";
 import { UserInput } from "./user.interface";
 import { User } from "./user.model";
 
@@ -9,7 +9,7 @@ class UserService {
     const user = await User.create(data);
     return {
       user,
-      token: Utils.sign({
+      token: Token.sign({
         _id: user._id,
         userName: user.userName,
       }),
@@ -21,7 +21,7 @@ class UserService {
     if (user && user.isValidPassword(body.password)) {
       return {
         user,
-        token: Utils.sign({
+        token: Token.sign({
           _id: user._id,
           userName: user.userName,
         }),

@@ -1,7 +1,7 @@
-import { capitalize, toLower, unset } from "lodash";
+import { capitalize, toLower } from "lodash";
 import { model, Document, Schema, Model } from "mongoose";
 import { IApp } from "../core/interface/app.common.interface";
-import Utils from "../core/utils";
+import { Password } from "../core/utils/index";
 
 export enum STATUS {
   ACTIVE = "ACTIVE",
@@ -10,15 +10,21 @@ export enum STATUS {
   SUSPEND = "SUSPEND",
 }
 
+export enum ROLE {
+  ADMIN = "ADMIN",
+  MANAGER = "MANAGER",
+  USER = "USER",
+}
+
 export interface IUser extends Document {
   firstName: string;
   lastName?: string;
   userName: string;
   email: string;
-  password: string;
+  password?: string;
   profile: string;
   // rating: number;
-  role: string[];
+  role: string;
   status: string;
 }
 
@@ -53,8 +59,8 @@ let schema = {
     default: false,
   },
   role: {
-    type: [String],
-    default: ["USER"],
+    type: String,
+    default: "USER",
   },
   status: {
     type: String,
@@ -77,13 +83,13 @@ const UserSchema = new Schema<IUserDocument>(schema, {
 // pre save document mapping
 UserSchema.pre("save", async function (next) {
   if (this.isNew) {
-    this.password = Utils.bcrypt(this.password);
+    this.password = Password.decode(this.password!);
   }
   next();
 });
 
 UserSchema.methods.isValidPassword = function (password) {
-  return Utils.compareSync(password, this.password);
+  return Password.verify(password, this.password!);
 };
 
 UserSchema.statics.findByEmailOrUserName = function (str: string) {
