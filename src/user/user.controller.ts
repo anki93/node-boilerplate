@@ -1,16 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { UserSvc } from "./user.service";
+import { Handle } from "../core/utils/index";
 
 class UserController {
   async signUp({ body }: Request, res: Response, next: NextFunction) {
     try {
       const user = await UserSvc.signUp(body);
-      res.status(200).json({
-        statusCode: 200,
-        error: "",
-        message: "User sign up successfully!",
-        data: user,
-      });
+      Handle.created(res, "User sign up successfully!", user);
     } catch (error) {
       next(error);
     }
@@ -22,12 +18,7 @@ class UserController {
       if (data && brute && brute.reset) {
         brute.reset();
       }
-      res.status(200).json({
-        statusCode: 200,
-        error: "",
-        message: "User sign in successfully!",
-        data,
-      });
+      Handle.ok(res, "User sign in successfully!", data);
     } catch (error) {
       next(error);
     }
