@@ -62,6 +62,12 @@ export const signUpRequest = async (
           minLength: "Should not be shorter than 3 characters",
         },
       },
+      role: {
+        type: "string",
+        errorMessage: {
+          type: "User role  must be string.",
+        },
+      },
     },
     errorMessage: {
       type: "Must be an object",

@@ -1,11 +1,15 @@
 import { unauthorized } from "@hapi/boom";
-import { IApp } from "../core/interface/app.common.interface";
 import { Token } from "../core/utils/index";
-import { UserInput } from "./user.interface";
+import { ISignInInput, ISignUpInput } from "./user.interface";
 import { User } from "./user.model";
 
 class UserService {
-  public async signUp(data: UserInput) {
+  /**
+   * Create user and return token
+   * @param data
+   * @returns object
+   */
+  public async signUp(data: ISignUpInput) {
     const user = await User.create(data);
     return {
       user,
@@ -16,7 +20,12 @@ class UserService {
     };
   }
 
-  public async signIn(body: IApp.IObject<string>) {
+  /**
+   * Login
+   * @param body
+   * @returns
+   */
+  public async signIn(body: ISignInInput) {
     const user = await User.findByEmailOrUserName(body.userNameOrEmail);
     if (user && user.isValidPassword(body.password)) {
       return {

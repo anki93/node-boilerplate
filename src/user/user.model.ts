@@ -1,34 +1,10 @@
 import { capitalize, toLower } from "lodash";
-import { model, Document, Schema, Model } from "mongoose";
+import { model, Schema } from "mongoose";
 import { IApp } from "../core/interface/app.common.interface";
 import { Password } from "../core/utils/index";
+import { IUserDocument, IUserModel, STATUS } from "./user.interface";
 
-export enum STATUS {
-  ACTIVE = "ACTIVE",
-  DELETED = "DELETED",
-  INACTIVE = "INACTIVE",
-  SUSPEND = "SUSPEND",
-}
-
-export enum ROLE {
-  ADMIN = "ADMIN",
-  MANAGER = "MANAGER",
-  USER = "USER",
-}
-
-export interface IUser extends Document {
-  firstName: string;
-  lastName?: string;
-  userName: string;
-  email: string;
-  password?: string;
-  profile: string;
-  // rating: number;
-  role: string;
-  status: string;
-}
-
-let schema = {
+const schema = {
   firstName: {
     type: String,
     set: capitalize,
@@ -69,13 +45,6 @@ let schema = {
   },
 };
 
-interface IUserDocument extends IUser {
-  isValidPassword: (str: string) => Boolean;
-}
-interface IUserModel extends Model<IUserDocument> {
-  findByEmailOrUserName: (str: string) => Promise<IUserDocument>;
-}
-
 const UserSchema = new Schema<IUserDocument>(schema, {
   timestamps: true,
 });
@@ -89,7 +58,7 @@ UserSchema.pre("save", async function (next) {
 });
 
 UserSchema.methods.isValidPassword = function (password) {
-  return Password.verify(password, this.password!);
+  return Password.verify(password, this.password);
 };
 
 UserSchema.statics.findByEmailOrUserName = function (str: string) {
