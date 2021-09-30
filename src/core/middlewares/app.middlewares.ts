@@ -6,7 +6,7 @@ import compression from "compression";
 import hpp from "hpp";
 import { ErrorMiddleware } from "./error.middlewares";
 import { RouteLayer } from "../interface/routerLayer";
-import { RequestInputMiddlewares } from "./request.input.middlewares";
+import { InputMiddlewares } from "./input.middlewares";
 
 interface IRoute {
   name: string;
@@ -58,7 +58,7 @@ export class AppMiddleware {
     this.app.use(hpp());
 
     // sanitizeInput
-    this.app.use(RequestInputMiddlewares.sanitizeInput);
+    this.app.use(InputMiddlewares.sanitizeInput);
   }
 
   protected errorHandlingMiddlerwares() {

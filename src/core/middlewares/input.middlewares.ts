@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import multer from "multer";
 import { Universal } from "../utils/index";
-export class RequestInputMiddlewares {
+export class InputMiddlewares {
   /**
    *  Sanitize input attributes
    *  */
@@ -12,7 +12,7 @@ export class RequestInputMiddlewares {
     next();
   }
 
-  static imageHandler(type: string): multer.Multer {
+  static fileHandler(type: string): multer.Multer {
     return multer({ dest: `uploads/${type}/` });
   }
 }
