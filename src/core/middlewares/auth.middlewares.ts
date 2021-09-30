@@ -2,6 +2,7 @@ import { forbidden, unauthorized } from "@hapi/boom";
 import { Request, Response, NextFunction } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import { isEmpty, get, includes } from "lodash";
+import { Logger } from "../../config";
 import { User } from "../../user/user.model";
 import { Token } from "../utils/index";
 export class Authenticate {
@@ -23,7 +24,8 @@ export class Authenticate {
       return next();
     } catch (err) {
       let error = err as Error;
-      return next(unauthorized(error.message));
+      Logger.warn(error.message);
+      return next(unauthorized("Invalid token"));
     }
   }
 

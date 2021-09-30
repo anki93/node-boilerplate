@@ -13,7 +13,7 @@ interface IRoute {
   route: RouteLayer;
 }
 //abstract
-export default class AppMiddleware {
+export class AppMiddleware {
   protected app: Application;
   protected routes: IRoute[] = [];
   constructor(app: Application) {

@@ -1,8 +1,8 @@
 import "source-map-support/register";
 import express from "express";
-import { MongoDb } from "./config"
-import AppMiddleware from "./core/middlewares/app.middlewares"
-import UserRoute from "./user/user.route"
+import { MongoDb } from "./config";
+import { AppMiddleware } from "./core/middlewares/app.middlewares";
+import UserRoute from "./user/user.route";
 
 new MongoDb();
 
