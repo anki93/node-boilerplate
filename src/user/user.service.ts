@@ -5,7 +5,7 @@ import { User } from "./user.model";
 
 class UserService {
   /**
-   * Create user and return token
+   * Create user and return user & token
    * @param data
    * @returns object
    */
