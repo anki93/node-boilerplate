@@ -7,7 +7,7 @@
     "server": "node dist/bin/server.js",
     "start": "tsc && nodemon dist/bin/server.js",
     "watch": "tsc -w",
-    "dev": "nodemon -w dist dist/bin/server.js",
+    "dev": "nodemon -w dist --delay 100ms dist/bin/server.js",
     "test": "snyk test"
   },
   "author": "",

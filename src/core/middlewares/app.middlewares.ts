@@ -27,10 +27,7 @@ export class AppMiddleware {
   public run() {
     this.globalMiddlewares();
     this.routes.forEach((module: IRoute) =>
-      this.app.use(
-        `/api/:version(\[v][1-9]?[0-9]\)/${module.name}`,
-        module.route.getRoutes()
-      )
+      this.app.use(`/api/${module.name}`, module.route.getRoutes())
     );
     this.errorHandlingMiddlerwares();
   }
