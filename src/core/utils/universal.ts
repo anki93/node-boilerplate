@@ -11,16 +11,18 @@ export class Universal {
   static normaliseErrorMessages(errors: Array<ErrorObject> | null | undefined) {
     if (isArray(errors)) {
       return errors.map((field: ErrorObject) => {
+        const error: any = {}
         if (field.instancePath.length && field.instancePath[0] === "/") {
-          field.propertyName = field.instancePath.slice(1);
+          error.attribute = field.instancePath.slice(1);
         } else if (has(field, "params.errors[0].params.missingProperty")) {
-          field.propertyName = get(
+          error.attribute = get(
             field,
             "params.errors[0].params.missingProperty"
           );
         }
-        unset(field, "params");
-        return field;
+        error.message = field.message;
+        // unset(field, "params");
+        return error;
       });
     }
     return errors;
@@ -34,8 +36,11 @@ export class Universal {
       const validate = ajvError(
         new ajv({ allErrors: true, $data: true })
       ).compile(schema);
+
+      const isValid = validate(data)
+      console.log(validate.errors, "validate.errors")
       return {
-        isValid: validate(data),
+        isValid,
         errors: Universal.normaliseErrorMessages(validate.errors),
       };
     } catch (err) {

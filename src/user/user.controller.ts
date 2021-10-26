@@ -26,6 +26,7 @@ class UserController {
 
   async list(req: Request, res: Response) {
     // res.status(200).json({});
+    Handle.ok(res, "Succcess", { name: Math.ceil((Math.random() * 100)) })
   }
 }
 

@@ -12,6 +12,7 @@ process.on("unhandledRejection", (reason: any) => {
 
 // handle uncaught exception
 process.on("uncaughtException", (err: Error) => {
+  console.log(err);
   Logger.error(`UnCaughtException - ${err.message}`, err.stack);
 });
 
@@ -50,7 +51,8 @@ export class ErrorMiddleware {
       obj.data = err.data;
       res.status(err.output.statusCode).json(obj);
     } else if (err instanceof MongoError) {
-      res.status(500).json(ErrorMiddleware.handleMongoError(err));
+      const json = ErrorMiddleware.handleMongoError(err);
+      res.status(json.statusCode).json(json);
     } else {
       const obj: Payload = {
         statusCode: 500,
