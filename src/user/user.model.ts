@@ -1,7 +1,7 @@
 import { capitalize, toLower } from "lodash";
 import { model, Schema } from "mongoose";
-import { IApp } from "../core/interface/app.common.interface";
-import { Password } from "../core/utils/index";
+import { IApp } from "@core/interface/app.common.interface";
+import { Password } from "@core/utils/index";
 import { IUserDocument, IUserModel, STATUS } from "./user.interface";
 
 const schema = {

@@ -1,7 +1,7 @@
-import Brute from "../config/brute";
-import { RouteLayer } from "../core/interface/routerLayer";
-import { InputMiddlewares } from "../core/middlewares";
-import { Authenticate } from "../core/middlewares/auth.middlewares";
+import Brute from "@config/brute";
+import { RouteLayer } from "@core/interface/routerLayer";
+import { InputMiddlewares } from "@core/middlewares";
+import { Authenticate } from "@core/middlewares/auth.middlewares";
 import UserController from "./user.controller";
 import { signUpRequest, signInRequest } from "./user.request";
 

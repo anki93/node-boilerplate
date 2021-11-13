@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UserSvc } from "./user.service";
-import { Handle } from "../core/utils/index";
+import { Handle } from "@core/utils/index";
+import { Error } from "mongoose";
 
 class UserController {
   async signUp({ body }: Request, res: Response, next: NextFunction) {
@@ -25,7 +26,6 @@ class UserController {
   }
 
   async list(req: Request, res: Response) {
-    // res.status(200).json({});
     Handle.ok(res, "Succcess", { name: Math.ceil((Math.random() * 100)) })
   }
 }

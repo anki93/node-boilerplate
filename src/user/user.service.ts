@@ -1,8 +1,7 @@
 import { unauthorized } from "@hapi/boom";
-import { Token } from "../core/utils/index";
+import { Token } from "@core/utils/index";
 import { ISignInInput, ISignUpInput } from "./user.interface";
 import { User } from "./user.model";
-
 class UserService {
   /**
    * Create user and return user & token
