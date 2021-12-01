@@ -34,11 +34,10 @@ export class Universal {
   ): Promise<IApp.IValidate> {
     try {
       const validate = ajvError(
-        new ajv({ allErrors: true, $data: true })
+        new ajv({ allErrors: true, $data: true, removeAdditional: "all" })
       ).compile(schema);
 
       const isValid = validate(data)
-      console.log(validate.errors, "validate.errors")
       return {
         isValid,
         errors: Universal.normaliseErrorMessages(validate.errors),
